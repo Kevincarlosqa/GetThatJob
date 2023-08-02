@@ -47,10 +47,26 @@ const AmountInput = styled.input`
 `;
 
 function Price({ price, onChange }) {
-  function handleChange(event) {
-    onChange(event);
-  }
+  const [min, setMin] = useState("");
+  const [max, setMax] = useState("");
+  useEffect(() => {
+    // Combine min and max values and send them to the parent component
+    onChange({
+      target: {
+        name: "salary",
+        value: [+min, +max], // <-- Aquí cambiamos el objeto por un arreglo con los dos valores
+      },
+    });
+  }, [min, max]);
 
+  function handleChange(event) {
+    const { name, value } = event.target;
+    if (name === "min") {
+      setMin(value);
+    } else if (name === "max") {
+      setMax(value);
+    }
+  }
   return (
     <div>
       <FormContainer>
@@ -59,7 +75,7 @@ function Price({ price, onChange }) {
           <AmountInput
             name="min"
             type="number"
-            // value={price.min}
+            value={min}
             placeholder="min"
             onChange={handleChange}
           ></AmountInput>
@@ -67,7 +83,7 @@ function Price({ price, onChange }) {
           <AmountInput
             name="max"
             type="number"
-            // value={price.max}
+            value={max}
             placeholder="max"
             onChange={handleChange}
           ></AmountInput>
