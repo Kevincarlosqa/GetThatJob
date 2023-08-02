@@ -72,7 +72,6 @@ const InputContainer = styled.div`
 
 function NewJob() {
   const [job, setJobs] = useState({});
-  const [category, setCategory] = useState("");
   const { user } = useAuth();
 
   const handleChange = (e) => {
@@ -82,13 +81,13 @@ function NewJob() {
     });
   };
 
-  const handleSubmit = useCallback(async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const {
       title,
-      // category,
-      // job_type,
-      // salary,
+      category,
+      job_type,
+      salary,
       mandatory,
       optional_req,
       about,
@@ -98,12 +97,14 @@ function NewJob() {
       title: title.value,
       category: job.category ? job.category : "",
       job_type: job.type ? job.type : "",
-      salary: 2000,
+      salary: "3000",
       mandatory: mandatory.value,
       optional_req: optional_req.value,
       about: about.value,
       recruiter_id: user.id,
     };
+
+    console.log(updatedJob);
 
     createJobs(updatedJob).then(console.log).catch(console.log);
 
@@ -115,21 +116,21 @@ function NewJob() {
     // } catch (error) {
     //   console.error("Error updating recruiter:", error);
     // }
-  }, []);
+  };
 
   // console.log(recruiter);
   const optionsDefault = [
-    { value: "Manufacturing ", label: "Manufacturing"},
-    { value: "Legal", label: "Legal"},
-    { value: "Goverment", label: "Goverment"},
-    { value: "Sales", label: "Sales"},
-    { value: "Education", label: "Education"},
+    { value: "Manufacturing ", label: "Manufacturing" },
+    { value: "Legal", label: "Legal" },
+    { value: "Goverment", label: "Goverment" },
+    { value: "Sales", label: "Sales" },
+    { value: "Education", label: "Education" },
   ];
 
   const optionsDefault2 = [
-    { value: "Full Time", label: "Full Time"},
-    { value: "Part Time", label: "Part Time"},
-    { value: "Internship", label: "Internship"},
+    { value: "Full Time", label: "Full Time" },
+    { value: "Part Time", label: "Part Time" },
+    { value: "Internship", label: "Internship" },
   ];
   return (
     <Container>
