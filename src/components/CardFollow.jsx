@@ -154,7 +154,7 @@ function FollowCards({ props }) {
     <CardJobWrapper>
       <CompanyInfo>
         <LogoWrapper>
-          <img src={JobImg} />
+          <img src={props.logo} />
         </LogoWrapper>
         {props.followable_type == "Job" ? (
           <CompanyData>
