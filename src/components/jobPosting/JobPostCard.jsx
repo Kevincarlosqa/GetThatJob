@@ -17,7 +17,7 @@ import {
   RiCloseCircleLine,
 } from "react-icons/ri";
 import { useNavigate } from "react-router";
-import { getFormattedDate } from "../utils";
+import { getFormattedDate, getFixedSalary } from "../utils";
 import { deleteJob, getJobs } from "../../services/jobs-pro-services";
 
 const Container = styled.div`
@@ -136,8 +136,6 @@ const JobDetailCard = styled.div`
   }
 `;
 
-
-
 function JobPostCard({
   handleDelete,
   jobsData,
@@ -156,26 +154,29 @@ function JobPostCard({
 }) {
   const navigate = useNavigate();
   const [showDetail, setShowDetail] = useState(false);
+
+  const salaryRange = {
+    min: salary ? getFixedSalary(salary[0], "min") : "",
+    max: salary ? getFixedSalary(salary[1], "max") : "",
+  };
+
   const jobPostInfo = [
     { title: "Category", icon: <RiBuilding3Line />, value: category },
     { title: "Category", icon: <RiCalendar2Line />, value: job_type },
     {
       title: "Category",
       icon: <RiMoneyDollarCircleLine />,
-      value: salary,
+      value: salary ? `${salaryRange.min} - ${salaryRange.max}` : "",
     },
   ];
 
   function handleShowDetail() {
-    setShowDetail(!showDetail)
+    setShowDetail(!showDetail);
   }
 
   function handleShow() {
     navigate(`/jobs/${id}`);
   }
-
-  
-  
 
   const formattedDate = created_at ? getFormattedDate(created_at) : "";
   const { length } = applications
@@ -183,7 +184,7 @@ function JobPostCard({
         (application) => application.status !== "Review finished"
       )
     : "";
-    
+
   return (
     <Container>
       <CardContainer>
