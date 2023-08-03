@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { showJob } from "../services/jobs-pro-services";
 import { typography } from "../styles";
 import CompanyFollowed from "./CompanyFollowed";
+import { getFixedSalary } from "./utils";
 
 const CardJobWrapper = styled.div`
   display: flex;
@@ -150,6 +151,11 @@ function FollowCards({ props }) {
     }
   }, []);
 
+  const salaryRange = {
+    min: followData.salary ? getFixedSalary(followData.salary[0], "min") : "",
+    max: followData.salary ? getFixedSalary(followData.salary[1], "max") : "",
+  };
+
   return (
     <CardJobWrapper>
       <CompanyInfo>
@@ -174,7 +180,9 @@ function FollowCards({ props }) {
                 <RiMoneyDollarCircleLine
                   style={{ width: "15px", height: "15px" }}
                 />
-                {followData.salary}
+                {followData.salary
+                  ? `${salaryRange.min} - ${salaryRange.max}`
+                  : ""}
               </JobTimeSalary>
             </BenefitsWrapper>
           </CompanyData>

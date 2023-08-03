@@ -171,20 +171,26 @@ const JobDetails = () => {
 
   useEffect(() => {
     console.log("here");
-    showJob(id).then(setJobData).catch(console.log);
+    showJob(id)
+      .then((data) => setJobData(data))
+      .catch(console.log);
   }, []);
+
+  console.log(jobData);
 
   const jobCardInfo = [
     {
       title: "Category",
       icon: <RiBuilding3Line />,
-      value: `${jobData.category}`,
+      value: `${jobData?.category}`,
     },
-    { title: "type", icon: <RiCalendar2Line />, value: `${jobData.job_type}` },
+    { title: "type", icon: <RiCalendar2Line />, value: `${jobData?.job_type}` },
     {
       title: "Category",
       icon: <RiMoneyDollarCircleLine />,
-      value: `${jobData.salary - 1000} - ${jobData.salary + 1000}`,
+      value: jobData.salary
+        ? `${jobData?.salary[0]} - ${jobData?.salary[1]}`
+        : "",
     },
   ];
 
@@ -267,7 +273,7 @@ const JobDetails = () => {
               <p>{jobInfo.title}</p>
               <div>
                 {jobInfo.icon}
-                <span>{jobInfo.value}</span>
+                <span>{jobInfo.value ? jobInfo.value : ""}</span>
               </div>
             </div>
           ))}

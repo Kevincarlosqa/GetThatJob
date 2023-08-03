@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useAuth } from "../context/auth-context";
 import { postFollows } from "../services/following-services";
 import { deleteFollows } from "../services/following-services";
+import { getFixedSalary } from "./utils";
 
 const CardJobWrapper = styled.div`
   display: flex;
@@ -152,6 +153,11 @@ function CardJob({ props }) {
     setFollowStatus(!followStatus);
   }
 
+  const salaryRange = {
+    min: getFixedSalary(props.salary[0], "min"),
+    max: getFixedSalary(props.salary[1], "max"),
+  };
+
   return (
     <CardJobWrapper>
       <CompanyInfo>
@@ -175,7 +181,8 @@ function CardJob({ props }) {
               <RiMoneyDollarCircleLine
                 style={{ width: "15px", height: "15px" }}
               />
-              {`${props.salary - 1000} - ${props.salary + 1000}`}
+              {props.salary ? `${salaryRange.min} - ${salaryRange.max}` : ""}
+              {/* {`${props.salary[0]} - ${props.salary[1]}`} */}
             </JobTimeSalary>
           </BenefitsWrapper>
         </CompanyData>

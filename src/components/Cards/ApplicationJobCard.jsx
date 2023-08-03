@@ -96,8 +96,8 @@ function ApplicationJobCard({ props, onDelete }) {
   }
 
   const salaryRange = {
-    min: getFixedSalary(props.job.salary, "min"),
-    max: getFixedSalary(props.job.salary, "max"),
+    min: getFixedSalary(props.job.salary[0], "min"),
+    max: getFixedSalary(props.job.salary[1], "max"),
   };
 
   const formattedDate = getFormattedDate(props.job.created_at);
@@ -194,7 +194,7 @@ function ApplicationJobCard({ props, onDelete }) {
               justifyContent: "space-evenly",
             }}
           >
-              {/* <Button
+            {/* <Button
                 children={"download"}
                 icon={<RiDownloadLine />}
                 type={"secondary"}

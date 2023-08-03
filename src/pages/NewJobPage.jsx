@@ -81,6 +81,10 @@ function NewJob() {
     });
   };
 
+  // const getPriceRangeString(minPrice, maxPrice) {
+  //   return "Price Range: $" + minPrice + " - $" + maxPrice;
+  // }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const {
