@@ -44,8 +44,16 @@ export async function getUser() {
   return user;
 }
 
-export async function updateUser(userData) {
+export async function updateUserWFile(userData) {
   const { token, ...user } = await getCvClient("profile/professionals", {
+    method: "PATCH",
+    body: userData,
+  });
+  return user;
+}
+
+export async function updateUser(userData) {
+  const { token, ...user } = await getJobClient("profile/professionals", {
     method: "PATCH",
     body: userData,
   });
