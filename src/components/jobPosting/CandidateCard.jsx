@@ -44,6 +44,7 @@ const CardContainer = styled.div`
     display: flex;
     color: #8e8e8e;
     gap: 8px;
+    align-items: center;
   }
   & > div:nth-of-type(1) > div > div {
     display: flex;

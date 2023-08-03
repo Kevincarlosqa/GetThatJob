@@ -81,9 +81,13 @@ function NewJob() {
     });
   };
 
-  // const getPriceRangeString(minPrice, maxPrice) {
-  //   return "Price Range: $" + minPrice + " - $" + maxPrice;
-  // }
+  const handlePriceChange = (e) => {
+    const { value } = e.target;
+    setJobs({
+      ...job,
+      salary: value, // <-- Aquí actualizamos el salario completo en el estado
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -101,7 +105,7 @@ function NewJob() {
       title: title.value,
       category: job.category ? job.category : "",
       job_type: job.type ? job.type : "",
-      salary: "3000",
+      salary: job.salary ? job.salary : "",
       mandatory: mandatory.value,
       optional_req: optional_req.value,
       about: about.value,
@@ -170,7 +174,7 @@ function NewJob() {
               label={"Salary Range"}
               name={"salary"}
               value={job.salary ? job.salary : ""}
-              onChange={handleChange}
+              onChange={handlePriceChange}
             />
           </InputContainer>
         </MainContainer>

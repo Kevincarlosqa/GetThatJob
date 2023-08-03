@@ -98,19 +98,19 @@ export default function RecruiterForm({ step, setStatus }) {
       email,
       password,
     };
-    console.log(credentials);
 
     loginRecruiter(credentials);
   }
 
-  async function handleFinish() {
+  async function handleFinish(event) {
+    event.preventDefault();
+
     const userData = Object.keys(formData).reduce((acc, key) => {
       if (formData[key] !== "" && formData[key] !== null) {
         acc[key] = formData[key];
       }
       return acc;
     }, {});
-    console.log(userData);
 
     const formFile = new FormData();
     if (resume) {
@@ -134,7 +134,7 @@ export default function RecruiterForm({ step, setStatus }) {
       email,
       password,
     };
-    console.log(credentials);
+
     loginRecruiter(credentials);
   }
 
