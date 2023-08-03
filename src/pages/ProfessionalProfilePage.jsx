@@ -1,6 +1,11 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { getUser, updateUser } from "../services/professional-services";
+import {
+  getUser,
+  login,
+  updateUser,
+  updateUserWFile,
+} from "../services/professional-services";
 
 import Button from "../components/buttons/Button";
 import Input from "../components/inputs/Input";
@@ -136,18 +141,21 @@ function ProfessionalProfile() {
       professional_title: professional_title.value,
       experience: experience.value,
       education: education.value,
-      resume: formFile,
+      // resume: formFile,
     };
     for (const [key, value] of Object.entries(updatedUser)) {
       formFile.append(key, value);
     }
-    console.log("updatedUser", formFile);
     formFile.append("resume", file);
+    console.log("updatedUser", formFile);
+    console.log(file);
 
     try {
-      await updateUser(formFile)
-        .then(console.log("User updated successfully."))
-        .catch(console.log);
+      file
+        ? await updateUserWFile(formFile)
+        : await updateUser(updatedUser)
+            .then(console.log("User updated successfully."))
+            .catch(console.log);
     } catch (error) {
       console.error("Error updating user:", error);
     }
