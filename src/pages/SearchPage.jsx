@@ -157,9 +157,10 @@ function SearchJob() {
   useEffect(() => {
     getJobs()
       .then((data) => {
+        const openJobs = data.filter((job) => job.job_status);
         setJobsData({
-          all: data,
-          filtered: data,
+          all: openJobs,
+          filtered: openJobs,
         });
       })
       .catch(console.log);
@@ -180,6 +181,7 @@ function SearchJob() {
   }, [selectedOptions, price, search]);
 
   const countJobs = `${jobsData.filtered.length} Jobs for you`;
+  console.log(jobsData.filtered);
 
   return (
     <ContainerSearch>
