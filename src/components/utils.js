@@ -96,23 +96,20 @@ export function Filter(jobs, categoryOptions, typeOptions) {
 
 export function priceFilter(jobs, min, max) {
   if (min !== "" && max !== "") {
+    console.log(min, max);
     const minMaxfilter = jobs.filter(
-      (job) =>
-        min <= job.salary + 1000 &&
-        (job.salary + 1000 <= max || job.salary - 1000 <= max)
+      (job) => job.salary[0] <= max && job.salary[1] >= min
     );
     return minMaxfilter;
   }
 
   if (min !== "") {
-    const minFilter = jobs.filter((job) => min <= job.salary + 1000);
+    const minFilter = jobs.filter((job) => job.salary[1] >= min);
     return minFilter;
   }
 
   if (max !== "") {
-    const maxFilter = jobs.filter(
-      (job) => job.salary - 1000 <= max && job.salary + 1000 >= max
-    );
+    const maxFilter = jobs.filter((job) => job.salary[0] <= max);
     return maxFilter;
   }
 
@@ -168,12 +165,8 @@ export function getFormattedDate(date) {
 
 export function getFixedSalary(salary, range) {
   if (range === "min") {
-    return salary >= 1000
-      ? `${((salary - 1000) / 1000).toFixed(1)}k`
-      : `${salary}`;
+    return salary >= 1000 ? `${(salary / 1000).toFixed(1)}k` : `${salary}`;
   } else {
-    return salary >= 1000
-      ? `${((salary + 1000) / 1000).toFixed(1)}k`
-      : `${salary}`;
+    return salary >= 1000 ? `${(salary / 1000).toFixed(1)}k` : `${salary}`;
   }
 }
