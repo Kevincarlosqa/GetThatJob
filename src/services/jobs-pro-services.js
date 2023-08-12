@@ -40,3 +40,13 @@ export async function deleteJob(id) {
   });
   return data;
 }
+
+export async function closeJob(id) {
+  const data = await getJobClient(`/jobs/${id}`, {
+    method: "PATCH",
+    body: {
+      job_status: false,
+    },
+  });
+  return data;
+}
