@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import JobPostCard from "./JobPostCard";
 import { useState, useEffect } from "react";
 import { getJobs } from "../../services/jobs-pro-services";
-import { deleteJob } from "../../services/jobs-pro-services";
+import { closeJob } from "../../services/jobs-pro-services";
 import CircularCheckbox from "../inputs/circularCheckbox";
 import { FlexRowSm } from "../utils";
 
@@ -81,21 +81,67 @@ const JobPostings = () => {
   const [filter, setFilter] = useState("all");
 
   useEffect(() => {
-    getJobs().then(setJobsData).catch(console.log);
+    getJobs()
+      .then((data) => {
+        const sortedJobs = data.sort((jobA, jobB) => {
+          if (jobA.job_status === jobB.job_status) {
+            return 0;
+          }
+          if (!jobA.job_status) {
+            return 1;
+          }
+          if (!jobB.job_status) {
+            return -1;
+          }
+          return 0;
+        });
+        setJobsData(sortedJobs);
+      })
+      .catch(console.log);
   }, []);
 
   function handleFilterChange(event) {
     setFilter(event.target.value);
+    const sortedJobs = jobsData.sort((jobA, jobB) => {
+      if (jobA.job_status === jobB.job_status) {
+        return 0;
+      }
+      if (!jobA.job_status) {
+        return 1;
+      }
+      if (!jobB.job_status) {
+        return -1;
+      }
+      return 0;
+    });
+    setJobsData(sortedJobs);
   }
 
-  async function handleDelete(id) {
+  async function handleClose(id) {
     try {
-      const response = await deleteJob(id);
+      const response = await closeJob(id);
       // If the deletion was successful, update the state to remove the deleted job
       console.log(response.message);
-      setJobsData((prevJobsData) =>
-        prevJobsData.filter((job) => job.id !== id)
-      );
+      getJobs()
+        .then((data) => {
+          const sortedJobs = data.sort((jobA, jobB) => {
+            if (jobA.job_status === jobB.job_status) {
+              return 0;
+            }
+            if (!jobA.job_status) {
+              return 1;
+            }
+            if (!jobB.job_status) {
+              return -1;
+            }
+            return 0;
+          });
+          setJobsData(sortedJobs);
+        })
+        .catch(console.log);
+      // setJobsData((prevJobsData) =>
+      //   prevJobsData.filter((job) => job.id !== id)
+      // );
     } catch (error) {
       console.error("Error:", error);
     }
@@ -114,8 +160,7 @@ const JobPostings = () => {
           setFilteredJobs(filtered1);
           break;
         case "closed":
-          const filtered2 = jobsData.filter((job) => job.category === "Legal");
-          // this filter is test only
+          const filtered2 = jobsData.filter((job) => !job.job_status);
           setFilteredJobs(filtered2);
           break;
         default:
@@ -126,7 +171,7 @@ const JobPostings = () => {
     }
   }, [filter, jobsData]);
 
-  console.log(jobsData);
+  console.log(filteredJobs);
   // I need jobsData.status and close button change status for job posted
 
   return (
@@ -161,11 +206,17 @@ const JobPostings = () => {
                 />
                 <label htmlFor="onTrack">With candidates on track</label>
               </OptionContainer>
-              {/* <OptionContainer>
-          
-                <input type="radio" id="closed" name="filter" value={"closed"} onChange={handleFilterChange} checked={filter === "closed"}/>
+              <OptionContainer>
+                <input
+                  type="radio"
+                  id="closed"
+                  name="filter"
+                  value={"closed"}
+                  onChange={handleFilterChange}
+                  checked={filter === "closed"}
+                />
                 <label htmlFor="closed">Closed</label>
-              </OptionContainer> */}
+              </OptionContainer>
             </FlexRowSm>
           </div>
         </div>
@@ -174,7 +225,7 @@ const JobPostings = () => {
           <div>
             {filteredJobs.map((job, index) => (
               <JobPostCard
-                handleDelete={handleDelete}
+                handleClose={handleClose}
                 jobsData={jobsData}
                 setJobsData={setJobsData}
                 id={job.id}
@@ -189,6 +240,7 @@ const JobPostings = () => {
                 applications={job.applications}
                 created_at={job.created_at}
                 applications_count={job.applications_count}
+                job_status={job.job_status}
               />
             ))}
           </div>

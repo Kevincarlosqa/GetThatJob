@@ -137,7 +137,7 @@ const JobDetailCard = styled.div`
 `;
 
 function JobPostCard({
-  handleDelete,
+  handleClose,
   jobsData,
   setJobsData,
   id,
@@ -151,6 +151,7 @@ function JobPostCard({
   created_at,
   applications,
   applications_count,
+  job_status,
 }) {
   const navigate = useNavigate();
   const [showDetail, setShowDetail] = useState(false);
@@ -169,6 +170,11 @@ function JobPostCard({
       value: salary ? `${salaryRange.min} - ${salaryRange.max}` : "",
     },
   ];
+
+  function handleCloseJob(id) {
+    handleClose(id);
+    setJobStatus(false);
+  }
 
   function handleShowDetail() {
     setShowDetail(!showDetail);
@@ -230,13 +236,14 @@ function JobPostCard({
             </div>
             {/* <button>Close</button> */}
             <Button
-              children={"close"}
+              children={job_status ? "close" : "closed"}
               icon={
                 <RiCloseCircleLine style={{ width: "24px", height: "24px" }} />
               }
-              type={"primary"}
+              type={job_status ? "primary" : "inactive"}
               size={"sm"}
-              onClick={() => handleDelete(id)}
+              onClick={() => handleCloseJob(id)}
+              disabled={!job_status}
             />
           </div>
           <div onClick={handleShowDetail}>
